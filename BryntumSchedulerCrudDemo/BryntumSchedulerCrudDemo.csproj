@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.js" />
+    <Content Include="app\model\RoomBookingDetailsModel.js" />
     <Content Include="app\model\RoomBookingModel.js" />
     <Content Include="app\store\CrudManager.js" />
     <Content Include="app\store\EventStore.js" />

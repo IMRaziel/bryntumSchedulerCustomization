@@ -8,7 +8,8 @@ Ext.define('MyApp.view.Viewport', {
         'MyApp.store.CrudManager',
         'MyApp.store.ResourceStore',
         'MyApp.store.EventStore',
-        'MyApp.view.Scheduler'
+        'MyApp.view.Scheduler',
+		'MyApp.model.RoomBookingDetailsModel'
     ],
 
     layout      : {
@@ -36,7 +37,7 @@ Ext.define('MyApp.view.Viewport', {
             listeners       : {
                 loadfail    : this.processError,
                 syncfail    : this.processError,
-
+                load: _ => scheduler.scrollToDate/*Centered*/(new Date(), true),
                 scope       : this
             }
         });
@@ -138,13 +139,98 @@ Ext.define('MyApp.view.Viewport', {
                 displayInfo     : true,
                 displayMsg      : 'Displaying resources {0} - {1} of {2}',
                 emptyMsg        : "No resources to display"
-            }
-        });
+            },
+			 listeners: {
+			 	eventclick: function (sch, rec) {
+			 		var form = this.up().down("form");
+			 		form.viewModel.setData(Ext.clone(rec.data));
+					 form.eventRecord = rec;
+					 console.log("event click", arguments);
+			 	}
+			 }
+		});
 
-		var detailsPanel = {
-			xtype: "panel",
+		var detailsForm = {
+			xtype: "form",
+			id: "DestailsForm",
+
+			style: {
+				padding: "10px"
+			},
+
+			viewModel: {
+				type: "RoomBookingDetailsModel"
+			},
+
+			listeners: {
+				beforerender: x => x.setViewModel({})
+			},
+
+			items: [
+				{
+					fieldLabel: "RoomType",
+					bind: "{RoomType}",
+					xtype: "combo",
+					store: [[0, "RoomType 0"], [1, "RoomType 1"], [2, "RoomType 2"]],
+					readOnly: true
+				},
+				{
+					fieldLabel: "RoomStatus",
+					bind: "{RoomStatus}",
+					xtype: "combo",
+					store: [[0, "RoomStatus 0"], [1, "RoomStatus 1"], [2, "RoomStatus 2"]],
+					readOnly: true
+				},
+				{
+					fieldLabel: "StartDate",
+					bind: "{StartDate}",
+					xtype: "datefield",
+					readOnly: true
+				},
+				{
+					fieldLabel: "EndDate",
+					bind: "{EndDate}",
+					xtype: "datefield",
+					readOnly: true
+				},
+				{
+					fieldLabel: "Guest",
+					bind: "{Guest.GuestId}",
+					xtype: "combo",
+					valueField: "GuestId",
+					displayField: "Name",
+					queryMode: "local",
+					store: {
+						fields: ["GuestId", "Name"],
+						data: [
+							{ GuestId: 1, Name: "Guest 1" },
+							{ GuestId: 2, Name: "Guest 2" }
+						],
+						type: "json"
+					},
+					readOnly: true
+				},
+			],
+//			buttons: [
+//				{
+//					text: "Apply",
+//					handler: function(btn) {
+//						var form = btn.up("form");
+//						debugger;
+//						form.eventRecord.set(form.getViewModel().data);
+//					},
+//					hidden: true
+//				}
+//			]
+		}
+
+	    var detailsPanel = {
+	    	xtype: "panel",
+			id: "DestailsPanel",
 			region: "east",
-			flex: 15
+			flex: 15,
+			layout: "fit",
+			items: detailsForm
 		}
 
 		this.items = {

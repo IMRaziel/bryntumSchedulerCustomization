@@ -72,7 +72,9 @@ namespace BryntumSchedulerCrudDemo.Controllers
                 // just in case we make any changes during load request processing
                 scheduler.context.SaveChanges();
 
-                return Content(JsonConvert.SerializeObject(loadResponse, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects }), "application/json");
+                return Content(JsonConvert.SerializeObject(loadResponse, new JsonSerializerSettings {
+	                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }), "application/json");
             }
             catch (Exception e)
             {

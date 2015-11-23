@@ -22,7 +22,10 @@ namespace BryntumSchedulerCrudDemo.App_Start
 					context.SaveChanges();
 
 					context.Guests.Add(new Guest() {
-						Name = "Guest"
+						Name = "Guest 1"
+					});
+					context.Guests.Add(new Guest() {
+						Name = "Guest 2"
 					});
 					context.SaveChanges();
 
@@ -32,6 +35,15 @@ namespace BryntumSchedulerCrudDemo.App_Start
 						StartDate = DateTime.Today,
 						EndDate = DateTime.Today.AddDays(1),
 						GuestId = 1
+					});
+					context.Events.Add(new RoomBooking() {
+						Name = "",
+						resourceId = 4,
+						StartDate = DateTime.Today.AddDays(2),
+						EndDate = DateTime.Today.AddDays(4),
+						GuestId = 2,
+						RoomStatus = 1,
+						RoomType = 1
 					});
 					context.SaveChanges();
 				}

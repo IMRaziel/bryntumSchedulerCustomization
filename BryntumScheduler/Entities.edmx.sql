@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/23/2015 08:51:29
+-- Date Created: 11/23/2015 20:11:56
 -- Generated from EDMX file: Z:\Bryntum-4.x-45d-trial\scheduler-4.0.1-trial\examples\ASP.NET CRUD demo\BryntumScheduler\Entities.edmx
 -- --------------------------------------------------
 
@@ -20,14 +20,14 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_events_resources]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Events] DROP CONSTRAINT [FK_events_resources];
 GO
-IF OBJECT_ID(N'[dbo].[FK_RoomBookingGuest]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Events_RoomBooking] DROP CONSTRAINT [FK_RoomBookingGuest];
+IF OBJECT_ID(N'[dbo].[FK_Room_inherits_Resource]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Resources_Room] DROP CONSTRAINT [FK_Room_inherits_Resource];
 GO
 IF OBJECT_ID(N'[dbo].[FK_RoomBooking_inherits_Event]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Events_RoomBooking] DROP CONSTRAINT [FK_RoomBooking_inherits_Event];
 GO
-IF OBJECT_ID(N'[dbo].[FK_Room_inherits_Resource]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Resources_Room] DROP CONSTRAINT [FK_Room_inherits_Resource];
+IF OBJECT_ID(N'[dbo].[FK_RoomBookingGuest]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Events_RoomBooking] DROP CONSTRAINT [FK_RoomBookingGuest];
 GO
 
 -- --------------------------------------------------
@@ -37,17 +37,17 @@ GO
 IF OBJECT_ID(N'[dbo].[Events]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Events];
 GO
+IF OBJECT_ID(N'[dbo].[Events_RoomBooking]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Events_RoomBooking];
+GO
+IF OBJECT_ID(N'[dbo].[Guests]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Guests];
+GO
 IF OBJECT_ID(N'[dbo].[Options]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Options];
 GO
 IF OBJECT_ID(N'[dbo].[Resources]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Resources];
-GO
-IF OBJECT_ID(N'[dbo].[Guests]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Guests];
-GO
-IF OBJECT_ID(N'[dbo].[Events_RoomBooking]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Events_RoomBooking];
 GO
 IF OBJECT_ID(N'[dbo].[Resources_Room]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Resources_Room];
@@ -96,7 +96,7 @@ GO
 CREATE TABLE [dbo].[Events_RoomBooking] (
     [RoomType] smallint  NOT NULL,
     [RoomStatus] smallint  NOT NULL,
-    [Price] decimal(18,0)  NOT NULL,
+    [Price] decimal(18,4)  NOT NULL,
     [GuestId] int  NOT NULL,
     [Id] int  NOT NULL
 );
