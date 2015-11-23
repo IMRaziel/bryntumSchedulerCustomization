@@ -37,7 +37,7 @@ Ext.define('MyApp.view.Viewport', {
             listeners       : {
                 loadfail    : this.processError,
                 syncfail    : this.processError,
-                //load: _ => scheduler.scrollToDate/*Centered*/(new Date(), true),
+                load: _ => scheduler.scrollToDate/*Centered*/(new Date(), true),
                 scope       : this
             }
         });
@@ -74,7 +74,7 @@ Ext.define('MyApp.view.Viewport', {
 			width: 220
 		}
 
-	    debugger;
+//	    debugger;
 		Sch.preset.Manager.registerPreset("MonthDayNameDay", {
 			"timeColumnWidth": 100,
 			"rowHeight": 24,
@@ -129,33 +129,6 @@ Ext.define('MyApp.view.Viewport', {
             crudManager         : crudManager,
 
             tbar                : [
-                {
-                    text    : 'Add new resource',
-                    iconCls : 'icon-add',
-                    border  : 1,
-                    handler : function() {
-                        resourceStore.add(new resourceStore.model({ Name : 'New resource' }));
-                    }
-                },
-                '-',
-                {
-                    text    : 'Save changes',
-                    iconCls : 'icon-save',
-                    itemId  : 'save-button',
-                    handler : function() {
-                        crudManager.sync();
-                    }
-                },
-                {
-                    iconCls         : 'togglebutton',
-                    text            : 'Sync changes automatically',
-                    scope           : this,
-                    enableToggle    : true,
-                    handler         : function(btn) {
-                        this.down('#save-button').setDisabled(btn.pressed);
-                        crudManager.autoSync = btn.pressed;
-                    }
-                },
 				{
 					text: 'Today',
 					width: 80,
@@ -166,14 +139,6 @@ Ext.define('MyApp.view.Viewport', {
 				},
 				daySelectionComboConfig
             ],
-            //define bottom bar with pagination buttons
-            bbar                : {
-                xtype           : 'sch_pagingtoolbar',
-                store           : resourceStore,
-                displayInfo     : true,
-                displayMsg      : 'Displaying resources {0} - {1} of {2}',
-                emptyMsg        : "No resources to display"
-            },
 			 listeners: {
 			 	eventclick: function (sch, rec) {
 			 		var form = this.up().down("form");

@@ -3,5 +3,5 @@ Ext.define('MyApp.store.ResourceStore', {
     storeId     : 'resources',
     model       : 'Sch.model.Resource',
     //limit resources to 5 per page
-    pageSize    : 25
+    pageSize    : 1000
 });

@@ -22,3 +22,17 @@ body {
 .icon-save {
     background:url(../images/save.gif) no-repeat left center !important;
 }
+
+.resource-gradient {
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fcfcfc+0,e0e0e0+50,abb9bc+100 */
+	background: #fcfcfc; /* Old browsers */
+	background: -moz-linear-gradient(left, #fcfcfc 0%, #e0e0e0 50%, #abb9bc 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, #fcfcfc 0%,#e0e0e0 50%,#abb9bc 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, #fcfcfc 0%,#e0e0e0 50%,#abb9bc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#abb9bc',GradientType=1 ); /* IE6-9 */
+}
+
+.hide-lines {
+	border-style: hidden !important;
+	border-width:0px !important;
+}
