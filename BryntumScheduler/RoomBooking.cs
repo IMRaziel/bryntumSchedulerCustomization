@@ -12,17 +12,13 @@ namespace Bryntum.Scheduler
     using System;
     using System.Collections.Generic;
     
-    public partial class Event
+    public partial class RoomBooking : Event
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
-        public int resourceId { get; set; }
-        public bool Resizable { get; set; }
-        public bool Draggable { get; set; }
-        public string Сls { get; set; }
+        public short RoomType { get; set; }
+        public short RoomStatus { get; set; }
+        public decimal Price { get; set; }
+        public int GuestId { get; set; }
     
-        public virtual Resource Resource { get; set; }
+        public virtual Guest Guest { get; set; }
     }
 }

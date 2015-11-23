@@ -2,15 +2,15 @@ using Bryntum.CRUD.Request;
 
 namespace Bryntum.Scheduler.Request
 {
-    public class SchedulerSyncRequest : SyncRequest {
+    public class SchedulerSyncRequest<T, TR> : SyncRequest where T: Event where TR:Resource{
         /// <summary>
         /// Resource store changes.
         /// </summary>
-        public SyncStoreRequest<Resource> resources;
+        public SyncStoreRequest<TR> resources;
 
         /// <summary>
         /// Event store changes.
         /// </summary>
-        public SyncStoreRequest<Event> events;
+        public SyncStoreRequest<T> events;
     }
 }

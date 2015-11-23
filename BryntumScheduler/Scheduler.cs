@@ -3,6 +3,7 @@ using Bryntum.Scheduler;
 using Bryntum.Scheduler.Exception;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Bryntum.Scheduler
 {
-    public class Scheduler
+    public class Scheduler<T, TR> where T : Event where TR : Resource
     {
         public SchedulerEntities context;
 
@@ -33,25 +34,28 @@ namespace Bryntum.Scheduler
         /// </summary>
         /// <param name="id">Task identifier.</param>
         /// <returns>Task.</returns>
-        public Event getEvent(int id)
+        public T getEvent(int id)
         {
-            return context.Events.Find(id);
+            return context.Events.OfType<T>().FirstOrDefault(x=>x.Id==id);
         }
 
         /// <summary>
         /// Gets list of existing tasks.
         /// </summary>
         /// <returns>List of tasks.</returns>
-        public IEnumerable<Event> getEvents()
-        {
-            return context.Events.ToList();
+        public IEnumerable<T> getEvents(params string[] includes) {
+	        var query = context.Events.OfType<T>();
+            foreach (var i in includes ?? new string[0]) {
+	            query = query.Include(i);
+            }
+	        return query.ToList();
         }
 
-        /// <summary>
+	    /// <summary>
         /// Saves a task to the database. Creates a new or updates exisitng record depending on Id value.
         /// </summary>
         /// <param name="task">Task to save.</param>
-        public void saveEvent(Event eventRecord)
+        public void saveEvent(T eventRecord)
         {
             if (eventRecord.Id > 0)
             {
@@ -84,7 +88,7 @@ namespace Bryntum.Scheduler
         /// Removes event from the database.
         /// </summary>
         /// <param name="event">Event to remove.</param>
-        public void removeEvent(Event eventRecord, bool force = false)
+        public void removeEvent(T eventRecord, bool force = false)
         {
             Event entity = getEvent(eventRecord.Id);
             if (entity != null)
@@ -100,29 +104,29 @@ namespace Bryntum.Scheduler
         /// </summary>
         /// <param name="id">Resource identifier.</param>
         /// <returns>Resource.</returns>
-        public Resource getResource(int id)
+        public TR getResource(int id)
         {
-            return context.Resources.Find(id);
+            return context.Resources.OfType<TR>().FirstOrDefault(x=>x.Id==id);
         }
 
         /// <summary>
         /// Gets list of existing resources.
         /// </summary>
         /// <returns>List of resources.</returns>
-        public IEnumerable<Resource> getResources()
+        public IEnumerable<TR> getResources()
         {
-            return context.Resources.ToList();
+            return context.Resources.OfType<TR>().ToList();
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// 
-        public IEnumerable<Resource> getResources(int page, int pageSize)
+        public IEnumerable<TR> getResources(int page, int pageSize)
         {
             if (page < 1) page = 1;
 
-            return context.Resources.OrderBy(x => x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return context.Resources.OfType<TR>().OrderBy(x => x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public int getResourceCount() 
@@ -134,7 +138,7 @@ namespace Bryntum.Scheduler
         /// Saves a resource to the database. Either creates a new or updates existing record (depending on Id value).
         /// </summary>
         /// <param name="resource">Resource to save.</param>
-        public void saveResource(Resource resource)
+        public void saveResource(TR resource)
         {
             if (resource.Id > 0)
             {
@@ -160,9 +164,9 @@ namespace Bryntum.Scheduler
         /// Removes a resource from the database.
         /// </summary>
         /// <param name="resource">Resource to remove.</param>
-        public void removeResource(Resource resource, bool force = false)
+        public void removeResource(TR resource, bool force = false)
         {
-            Resource entity = getResource(resource.Id);
+            var entity = getResource(resource.Id);
             if (entity != null)
             {
                 if (entity.events.Count > 0) throw new CrudException("Cannot remove assigned resource #" + resource.Id, SchedulerCodes.REMOVE_USED_RESOURCE);

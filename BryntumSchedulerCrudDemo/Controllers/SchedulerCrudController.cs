@@ -42,7 +42,7 @@ namespace BryntumSchedulerCrudDemo.Controllers
             {
                 string json = Request.QueryString.Get("q");
 
-                var scheduler = new Scheduler();
+                var scheduler = new Scheduler<RoomBooking, Room>();
 
                 // decode request object
                 try
@@ -60,7 +60,7 @@ namespace BryntumSchedulerCrudDemo.Controllers
                 // initialize response object
                 var loadResponse = new SchedulerLoadResponse(requestId);
 
-                if (loadRequest.events != null) loadResponse.setEvents(scheduler.getEvents());
+                if (loadRequest.events != null) loadResponse.setEvents(scheduler.getEvents("Guest"));
                 if (loadRequest.resources != null) loadResponse.setResources(
                     scheduler.getResources(Convert.ToInt32(loadRequest.resources["page"]), Convert.ToInt32(loadRequest.resources["pageSize"])),
                     scheduler.getResourceCount()
@@ -72,7 +72,7 @@ namespace BryntumSchedulerCrudDemo.Controllers
                 // just in case we make any changes during load request processing
                 scheduler.context.SaveChanges();
 
-                return Content(JsonConvert.SerializeObject(loadResponse), "application/json");
+                return Content(JsonConvert.SerializeObject(loadResponse, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects }), "application/json");
             }
             catch (Exception e)
             {
@@ -88,18 +88,18 @@ namespace BryntumSchedulerCrudDemo.Controllers
         public ActionResult Sync()
         {
             ulong? requestId = null;
-            SchedulerSyncRequest syncRequest = null;
+            SchedulerSyncRequest<RoomBooking, Room> syncRequest = null;
 
             try
             {
                 string json = getPostBody();
 
-                var scheduler = new Scheduler();
+                var scheduler = new Scheduler<RoomBooking, Room>();
 
                 // decode request object
                 try
                 {
-                    syncRequest = JsonConvert.DeserializeObject<SchedulerSyncRequest>(json, new Newtonsoft.Json.Converters.IsoDateTimeConverter { DateTimeFormat = dateFormat });
+                    syncRequest = JsonConvert.DeserializeObject<SchedulerSyncRequest<RoomBooking, Room>>(json, new Newtonsoft.Json.Converters.IsoDateTimeConverter { DateTimeFormat = dateFormat });
                 }
                 catch (Exception)
                 {
@@ -122,17 +122,17 @@ namespace BryntumSchedulerCrudDemo.Controllers
 
                 // if a corresponding store modified data are provided then we handle them
 
-                ResourceSyncHandler resourcesHandler = null;
+                ResourceSyncHandler<RoomBooking, Room> resourcesHandler = null;
                 if (syncRequest.resources != null)
                 {
-                    resourcesHandler = new ResourceSyncHandler(scheduler);
-                    syncResponse.resources = resourcesHandler.Handle(syncRequest.resources, ResourceSyncHandler.Rows.AddedAndUpdated);
+                    resourcesHandler = new ResourceSyncHandler<RoomBooking, Room>(scheduler);
+                    syncResponse.resources = resourcesHandler.Handle(syncRequest.resources, ResourceSyncHandler<RoomBooking, Room>.Rows.AddedAndUpdated);
                 }
-                EventSyncHandler eventsHandler = null;
+                EventSyncHandler<RoomBooking, Room> eventsHandler = null;
                 if (syncRequest.events != null)
                 {
-                    eventsHandler = new EventSyncHandler(scheduler, dateFormat);
-                    syncResponse.events = eventsHandler.Handle(syncRequest.events, EventSyncHandler.Rows.AddedAndUpdated);
+                    eventsHandler = new EventSyncHandler<RoomBooking, Room>(scheduler, dateFormat);
+                    syncResponse.events = eventsHandler.Handle(syncRequest.events, EventSyncHandler<RoomBooking, Room>.Rows.AddedAndUpdated);
                 }
 
                 if (syncRequest.events != null)
@@ -157,7 +157,7 @@ namespace BryntumSchedulerCrudDemo.Controllers
             }
         }
 
-        protected SyncStoreResponse AddModifiedRows(Scheduler scheduler, string table, SyncStoreResponse resp)
+        protected SyncStoreResponse AddModifiedRows(Scheduler<RoomBooking, Room> scheduler, string table, SyncStoreResponse resp)
         {
             if (scheduler.HasUpdatedRows(table))
             {
@@ -181,7 +181,7 @@ namespace BryntumSchedulerCrudDemo.Controllers
         /// <returns>Empty string.</returns>
         public string Reset()
         {
-            var scheduler = new Scheduler();
+            var scheduler = new Scheduler<RoomBooking, Room>();
 
             scheduler.Reset();
             scheduler.context.SaveChanges();

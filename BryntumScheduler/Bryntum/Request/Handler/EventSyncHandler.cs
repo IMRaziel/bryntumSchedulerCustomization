@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace Bryntum.Scheduler.Request.Handler
 {
-    public class EventSyncHandler : SyncStoreRequestHandler<Event> {
+    public class EventSyncHandler<T, TR> : SyncStoreRequestHandler<T> where T: Event where TR: Resource{
 
-        private Scheduler Scheduler;
+        private Scheduler<T, TR> Scheduler;
 
-        public EventSyncHandler(Scheduler Scheduler, string dateFormat) : base(dateFormat) {
+        public EventSyncHandler(Scheduler<T, TR> Scheduler, string dateFormat) : base(dateFormat) {
             this.Scheduler = Scheduler;
         }
 
-        public override Event GetEntity(IDictionary<String, Object> changes) {
+        public override T GetEntity(IDictionary<String, Object> changes) {
             return Scheduler.getEvent(Convert.ToInt32(changes["Id"]));
         }
 
@@ -32,7 +32,7 @@ namespace Bryntum.Scheduler.Request.Handler
             return result;
         }
 
-        public override IDictionary<String, Object> Add(Event eventRecord) {
+        public override IDictionary<String, Object> Add(T eventRecord) {
             IDictionary<String, Object> response = PrepareData(eventRecord);
 
             Scheduler.saveEvent(eventRecord);
@@ -40,7 +40,7 @@ namespace Bryntum.Scheduler.Request.Handler
             return response;
         }
 
-        public override IDictionary<String, Object> Update(Event eventRecord, IDictionary<String, Object> changes)
+        public override IDictionary<String, Object> Update(T eventRecord, IDictionary<String, Object> changes)
         {
             if (changes.ContainsKey("Cls")) eventRecord.Сls = (string)changes["Cls"];
             if (changes.ContainsKey("Name")) eventRecord.Name = (string)changes["Name"];
@@ -54,10 +54,14 @@ namespace Bryntum.Scheduler.Request.Handler
 
             Scheduler.saveEvent(eventRecord);
 
-            return response;
+	        WriteAdditionalData(eventRecord, changes);
+
+			return response;
         }
 
-        public override IDictionary<String, Object> Remove(Event eventRecord)
+	    public void WriteAdditionalData(T eventRecord, IDictionary<String, Object> changes) {}
+
+	    public override IDictionary<String, Object> Remove(T eventRecord)
         {
             Scheduler.removeEvent(eventRecord);
             return new Dictionary<String, Object>();

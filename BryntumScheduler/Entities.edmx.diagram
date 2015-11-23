@@ -9,6 +9,12 @@
         <EntityTypeShape EntityType="bryntum_schedulerModel.Option" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
         <EntityTypeShape EntityType="bryntum_schedulerModel.Resource" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <AssociationConnector Association="bryntum_schedulerModel.FK_events_resources" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="bryntum_schedulerModel.RoomBooking" Width="1.5" PointX="7.75" PointY="3.375" />
+        <InheritanceConnector EntityType="bryntum_schedulerModel.RoomBooking" />
+        <EntityTypeShape EntityType="bryntum_schedulerModel.Guest" Width="1.5" PointX="7.5" PointY="5.625" />
+        <EntityTypeShape EntityType="bryntum_schedulerModel.Room" Width="1.5" PointX="2.25" PointY="5.5" />
+        <InheritanceConnector EntityType="bryntum_schedulerModel.Room" />
+        <AssociationConnector Association="bryntum_schedulerModel.RoomBookingGuest" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

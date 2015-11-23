@@ -19,7 +19,7 @@ namespace Bryntum.Scheduler
             this.events = new HashSet<Event>();
         }
     
-        public override int Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
     
         public virtual ICollection<Event> events { get; set; }

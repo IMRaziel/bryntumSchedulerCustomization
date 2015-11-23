@@ -1,4 +1,4 @@
-// T4 code generation is enabled for model 'c:\Users\Максим\Documents\Visual Studio 2013\Projects\ASP.NET CRUD demo\BryntumScheduler\Entities.edmx'. 
+﻿// T4 code generation is enabled for model 'Z:\Bryntum-4.x-45d-trial\scheduler-4.0.1-trial\examples\ASP.NET CRUD demo\BryntumScheduler\Entities.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

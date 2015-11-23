@@ -18,6 +18,7 @@ namespace Bryntum.Scheduler
         public SchedulerEntities()
             : base("name=SchedulerEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -28,5 +29,6 @@ namespace Bryntum.Scheduler
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<Option> Options { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
+        public virtual DbSet<Guest> Guests { get; set; }
     }
 }

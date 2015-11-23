@@ -87,6 +87,10 @@ Ext.define('MyApp.view.Viewport', {
             flex: 85,
 			region: "center",
 
+			eventRenderer : function (eventRec, resourceRec, templateData) {
+				return eventRec.data.Guest.Name;
+			},
+
             crudManager         : crudManager,
 
             tbar                : [

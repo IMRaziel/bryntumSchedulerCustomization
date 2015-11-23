@@ -1,60 +1,138 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="bryntum_schedulerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="events">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="255" />
-          <Property Name="startDate" Type="datetime" />
-          <Property Name="endDate" Type="datetime" />
-          <Property Name="resourceId" Type="int" Nullable="false" />
-          <Property Name="resizable" Type="bit" Nullable="false" />
-          <Property Name="draggable" Type="bit" Nullable="false" />
-          <Property Name="cls" Type="varchar" MaxLength="255" />
-        </EntityType>
-        <EntityType Name="options">
-          <Key>
-            <PropertyRef Name="name" />
-          </Key>
-          <Property Name="name" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="value" Type="varchar" MaxLength="45" />
-          <Property Name="dt" Type="datetime" />
-        </EntityType>
-        <EntityType Name="resources">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="255" />
-        </EntityType>
-        <Association Name="FK_events_resources">
-          <End Role="resources" Type="Self.resources" Multiplicity="1" />
-          <End Role="events" Type="Self.events" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="resources">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="events">
-              <PropertyRef Name="resourceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="bryntum_schedulerModelStoreContainer">
-          <EntitySet Name="events" EntityType="Self.events" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="options" EntityType="Self.options" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="resources" EntityType="Self.resources" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_events_resources" Association="Self.FK_events_resources">
-            <End Role="resources" EntitySet="resources" />
-            <End Role="events" EntitySet="events" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema></edmx:StorageModels>
+    <Schema Namespace="bryntum_schedulerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="bryntum_schedulerModelStoreContainer">
+    <EntitySet Name="Events" EntityType="bryntum_schedulerModel.Store.Events" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Options" EntityType="bryntum_schedulerModel.Store.Options" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Resources" EntityType="bryntum_schedulerModel.Store.Resources" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Guests" EntityType="bryntum_schedulerModel.Store.Guests" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Events_RoomBooking" EntityType="bryntum_schedulerModel.Store.Events_RoomBooking" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Resources_Room" EntityType="bryntum_schedulerModel.Store.Resources_Room" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_events_resources" Association="bryntum_schedulerModel.Store.FK_events_resources">
+      <End Role="resources" EntitySet="Resources" />
+      <End Role="events" EntitySet="Events" />
+    </AssociationSet>
+    <AssociationSet Name="RoomBookingGuest" Association="bryntum_schedulerModel.Store.RoomBookingGuest">
+      <End Role="RoomBooking" EntitySet="Events_RoomBooking" />
+      <End Role="Guest" EntitySet="Guests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RoomBooking_inherits_Event" Association="bryntum_schedulerModel.Store.FK_RoomBooking_inherits_Event">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="RoomBooking" EntitySet="Events_RoomBooking" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Room_inherits_Resource" Association="bryntum_schedulerModel.Store.FK_Room_inherits_Resource">
+      <End Role="Resource" EntitySet="Resources" />
+      <End Role="Room" EntitySet="Resources_Room" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Events">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="StartDate" Type="datetime" Nullable="true" />
+    <Property Name="EndDate" Type="datetime" Nullable="true" />
+    <Property Name="resourceId" Type="int" Nullable="false" />
+    <Property Name="Resizable" Type="bit" Nullable="false" />
+    <Property Name="Draggable" Type="bit" Nullable="false" />
+    <Property Name="Сls" Type="varchar" Nullable="true" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Options">
+    <Key>
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="45" />
+    <Property Name="Value" Type="varchar" Nullable="true" MaxLength="45" />
+    <Property Name="dt" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Resources">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="true" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Guests">
+    <Key>
+      <PropertyRef Name="GuestId" />
+    </Key>
+    <Property Name="GuestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Events_RoomBooking">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="RoomType" Type="smallint" Nullable="false" />
+    <Property Name="RoomStatus" Type="smallint" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="false" />
+    <Property Name="GuestId" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Resources_Room">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_events_resources">
+    <End Role="resources" Type="bryntum_schedulerModel.Store.Resources" Multiplicity="1" />
+    <End Role="events" Type="bryntum_schedulerModel.Store.Events" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="resources">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="events">
+        <PropertyRef Name="resourceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoomBookingGuest">
+    <End Role="RoomBooking" Type="bryntum_schedulerModel.Store.Events_RoomBooking" Multiplicity="*" />
+    <End Role="Guest" Type="bryntum_schedulerModel.Store.Guests" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Guest">
+        <PropertyRef Name="GuestId" />
+      </Principal>
+      <Dependent Role="RoomBooking">
+        <PropertyRef Name="GuestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RoomBooking_inherits_Event">
+    <End Role="Event" Type="bryntum_schedulerModel.Store.Events" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="RoomBooking" Type="bryntum_schedulerModel.Store.Events_RoomBooking" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RoomBooking">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Room_inherits_Resource">
+    <End Role="Resource" Type="bryntum_schedulerModel.Store.Resources" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Room" Type="bryntum_schedulerModel.Store.Resources_Room" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Resource">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="bryntum_schedulerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -100,7 +178,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SchedulerEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SchedulerEntities" annotation:LazyLoadingEnabled="false">
           <EntitySet Name="Events" EntityType="bryntum_schedulerModel.Event" />
           <EntitySet Name="Options" EntityType="bryntum_schedulerModel.Option" />
           <EntitySet Name="Resources" EntityType="bryntum_schedulerModel.Resource" />
@@ -108,47 +186,101 @@
             <End Role="resources" EntitySet="Resources" />
             <End Role="events" EntitySet="Events" />
           </AssociationSet>
+          <EntitySet Name="Guests" EntityType="bryntum_schedulerModel.Guest" />
+          <AssociationSet Name="RoomBookingGuest" Association="bryntum_schedulerModel.RoomBookingGuest">
+            <End Role="RoomBooking" EntitySet="Events" />
+            <End Role="Guest" EntitySet="Guests" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="RoomBooking" BaseType="bryntum_schedulerModel.Event" >
+          <Property Name="RoomType" Type="Int16" Nullable="false" />
+          <Property Name="RoomStatus" Type="Int16" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="Guest" Relationship="bryntum_schedulerModel.RoomBookingGuest" FromRole="RoomBooking" ToRole="Guest" />
+          <Property Name="GuestId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="GuestId" />
+          </Key>
+          <Property Name="GuestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="RoomBooking" Relationship="bryntum_schedulerModel.RoomBookingGuest" FromRole="Guest" ToRole="RoomBooking" />
+          <Property Name="Name" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Room" BaseType="bryntum_schedulerModel.Resource" />
+        <Association Name="RoomBookingGuest">
+          <End Type="bryntum_schedulerModel.RoomBooking" Role="RoomBooking" Multiplicity="*" />
+          <End Type="bryntum_schedulerModel.Guest" Role="Guest" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Guest">
+              <PropertyRef Name="GuestId" />
+            </Principal>
+            <Dependent Role="RoomBooking">
+              <PropertyRef Name="GuestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="bryntum_schedulerModelStoreContainer" CdmEntityContainer="SchedulerEntities">
-          <EntitySetMapping Name="Events">
-            <EntityTypeMapping TypeName="bryntum_schedulerModel.Event">
-              <MappingFragment StoreEntitySet="events">
-                <ScalarProperty Name="Сls" ColumnName="cls" />
-                <ScalarProperty Name="Id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="name" />
-                <ScalarProperty Name="StartDate" ColumnName="startDate" />
-                <ScalarProperty Name="EndDate" ColumnName="endDate" />
-                <ScalarProperty Name="resourceId" ColumnName="resourceId" />
-                <ScalarProperty Name="Resizable" ColumnName="resizable" />
-                <ScalarProperty Name="Draggable" ColumnName="draggable" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Options">
-            <EntityTypeMapping TypeName="bryntum_schedulerModel.Option">
-              <MappingFragment StoreEntitySet="options">
-                <ScalarProperty Name="Name" ColumnName="name" />
-                <ScalarProperty Name="Value" ColumnName="value" />
-                <ScalarProperty Name="dt" ColumnName="dt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Resources">
-            <EntityTypeMapping TypeName="bryntum_schedulerModel.Resource">
-              <MappingFragment StoreEntitySet="resources">
-                <ScalarProperty Name="Id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="bryntum_schedulerModelStoreContainer" CdmEntityContainer="SchedulerEntities">
+    <EntitySetMapping Name="Events">
+      <EntityTypeMapping TypeName="IsTypeOf(bryntum_schedulerModel.Event)">
+        <MappingFragment StoreEntitySet="Events">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="resourceId" ColumnName="resourceId" />
+          <ScalarProperty Name="Resizable" ColumnName="Resizable" />
+          <ScalarProperty Name="Draggable" ColumnName="Draggable" />
+          <ScalarProperty Name="Сls" ColumnName="Сls" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(bryntum_schedulerModel.RoomBooking)">
+        <MappingFragment StoreEntitySet="Events_RoomBooking">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RoomType" ColumnName="RoomType" />
+          <ScalarProperty Name="RoomStatus" ColumnName="RoomStatus" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="GuestId" ColumnName="GuestId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Options">
+      <EntityTypeMapping TypeName="IsTypeOf(bryntum_schedulerModel.Option)">
+        <MappingFragment StoreEntitySet="Options">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="dt" ColumnName="dt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Resources">
+      <EntityTypeMapping TypeName="IsTypeOf(bryntum_schedulerModel.Resource)">
+        <MappingFragment StoreEntitySet="Resources">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(bryntum_schedulerModel.Room)">
+        <MappingFragment StoreEntitySet="Resources_Room">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Guests">
+      <EntityTypeMapping TypeName="IsTypeOf(bryntum_schedulerModel.Guest)">
+        <MappingFragment StoreEntitySet="Guests">
+          <ScalarProperty Name="GuestId" ColumnName="GuestId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -162,7 +294,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
