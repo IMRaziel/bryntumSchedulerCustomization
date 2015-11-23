@@ -43,8 +43,11 @@ Ext.define('MyApp.view.Viewport', {
 
     	var startDate = Sch.util.Date.add(new Date(), Sch.util.Date.WEEK, -2),
             endDate = Sch.util.Date.add(new Date(), Sch.util.Date.MONTH, 2);
+    	startDate.setHours(0, 0, 0, 0);
+    	endDate.setHours(0, 0, 0, 0);
 
     	var today = new Date();
+    	today.setHours(0, 0, 0, 0);
 
     	var daysInTwoMonths = Sch.util.Date.getDurationInDays(today, endDate);
 
@@ -54,6 +57,8 @@ Ext.define('MyApp.view.Viewport', {
 			store: Array.range(-14, daysInTwoMonths)
 				.map(x => {
 					var date = Sch.util.Date.add(new Date(), Sch.util.Date.DAY, x);
+					date.setHours(0, 0, 0, 0);
+
 					return [
 						x==0? today : date,
 						Ext.Date.format(date, "l - d F")
@@ -68,7 +73,8 @@ Ext.define('MyApp.view.Viewport', {
 			width: 220
 		}
 
-	    var scheduler = Ext.create('MyApp.view.Scheduler', {
+		var scheduler = Ext.create('MyApp.view.Scheduler', {
+			id: "scheduler",
             eventBarTextField   : 'Name',
             viewPreset          : 'dayAndWeek',
             startDate           : startDate,
