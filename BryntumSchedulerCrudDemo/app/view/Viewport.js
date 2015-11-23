@@ -37,7 +37,7 @@ Ext.define('MyApp.view.Viewport', {
             listeners       : {
                 loadfail    : this.processError,
                 syncfail    : this.processError,
-                load: _ => scheduler.scrollToDate/*Centered*/(new Date(), true),
+                //load: _ => scheduler.scrollToDate/*Centered*/(new Date(), true),
                 scope       : this
             }
         });
@@ -74,10 +74,44 @@ Ext.define('MyApp.view.Viewport', {
 			width: 220
 		}
 
+	    debugger;
+		Sch.preset.Manager.registerPreset("MonthDayNameDay", {
+			"timeColumnWidth": 100,
+			"rowHeight": 24,
+			"resourceColumnWidth": 100,
+			"displayDateFormat": "m/d h:i A",
+			"shiftUnit": "d",
+			"shiftIncrement": 1,
+			"defaultSpan": 5,
+			"timeResolution": {
+				"unit": "h",
+				"increment": 1
+			},
+			"headerConfig": {
+				"middle": {
+					"unit": "DAY",
+					"align": "center",
+					"dateFormat": "D"
+				},
+				"top": {
+					"unit": "MONTH",
+					"align": "center",
+					"dateFormat": "M, Y"
+				},
+				"bottom": {
+					"unit": "DAY",
+					"align": "center",
+					"dateFormat": "d"
+				}
+			},
+			"columnLinesFor": "bottom",
+			name: "MonthDayNameDay"
+		});
+
 		var scheduler = Ext.create('MyApp.view.Scheduler', {
 			id: "scheduler",
             eventBarTextField   : 'Name',
-            viewPreset          : 'dayAndWeek',
+            viewPreset:			"MonthDayNameDay",
             startDate           : startDate,
             endDate             : endDate,
             title               : 'Scheduler with pagination',
