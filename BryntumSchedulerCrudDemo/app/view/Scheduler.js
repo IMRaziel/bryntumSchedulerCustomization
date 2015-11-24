@@ -13,9 +13,18 @@ Ext.define('MyApp.view.Scheduler', {
     autoAdjustTimeAxis	: false,
 
     initComponent : function() {
-        var me = this;
-        Ext.apply(this, {
+    	var me = this;
 
+
+
+        Ext.apply(this, {
+        	eventRenderer: function (eventRec, resourceRec, templateData) {
+		        templateData.cls = "booking-event";
+        		return eventRec.data.Guest.Name;
+        	},
+//        	eventTpl: new Ext.XTemplate(
+//				'<tpl for="."><div unselectable="on" tabindex="-1" id="scheduler-{id}" style="right:{right}px;left:{left}px;top:{top}px;height:{height}px;width:{width}px;{style}" class="sch-event x-unselectable {internalCls} {cls}"><div class="sch-resizable-handle sch-resizable-handle-start"></div><div unselectable="on" class="sch-event-inner {iconCls}">{body}</div><div class="sch-resizable-handle sch-resizable-handle-end"></div></div></tpl>'
+//			),
             columns : [
                 {
                     header      : 'Rooms',
@@ -66,6 +75,7 @@ Ext.define('MyApp.view.Scheduler', {
             },
             viewConfig: {
             	stripeRows: false,
+            	selectedEventCls: "booking-event-selected"
             },
             columnLines: false,
             rowLines: false,
