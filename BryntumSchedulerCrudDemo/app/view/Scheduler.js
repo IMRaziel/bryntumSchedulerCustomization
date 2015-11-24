@@ -101,20 +101,7 @@ Ext.define('MyApp.view.Scheduler', {
 								console.log(style)
 							})
 						})
-						var q = me;
-						var e = q.query("grid")[1];
-						var topHead = e.view.headerCt.el.query("table")[0]
-						var monthHeaders = Ext.get(topHead).query("td");
-						monthHeaders.forEach(x=> {
-							var viewRect = e.el.dom.getBoundingClientRect();
-							var headRect = x.getBoundingClientRect();
-							var style = intersect(viewRect, headRect);
 
-							var title = x.children[0];
-							title.style.float = style.float;
-							title.style["padding-" + style.float] = style.padding + "px"
-							console.log(style)
-						})
 					},
 				},
 			},
