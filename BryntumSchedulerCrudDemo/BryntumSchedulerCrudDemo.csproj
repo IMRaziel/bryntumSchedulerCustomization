@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -120,6 +121,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +131,7 @@
     <Content Include="app\store\CrudManager.js" />
     <Content Include="app\store\EventStore.js" />
     <Content Include="app\store\ResourceStore.js" />
+    <Content Include="app\utils.js" />
     <Content Include="app\view\Scheduler.js" />
     <Content Include="app\view\Viewport.js" />
     <Content Include="Global.asax" />
@@ -169,6 +172,13 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\bryntumdemo - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\bryntumdemo - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

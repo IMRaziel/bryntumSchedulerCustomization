@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using Bryntum.Scheduler;
@@ -19,10 +20,10 @@ namespace BryntumSchedulerCrudDemo
 						Id = 1,
 						Name = "",
 						resourceId = 3,
-						StartDate = DateTime.Today,
-						EndDate = DateTime.Today.AddDays(1).AddSeconds(-1),
+						StartDate = DateTime.Today.StartOfDay(),
+						EndDate = DateTime.Today.EndOfDay(),
 						GuestId = 1,
-						Price = Decimal.Parse("123456765,45"),
+						Price = Decimal.Parse("123456765.45", CultureInfo.InvariantCulture),
                         Guest = new Guest() {
 							GuestId = 1,
 							Name = "Guest 1"
@@ -32,12 +33,12 @@ namespace BryntumSchedulerCrudDemo
 						Id = 2,
 						Name = "",
 						resourceId = 4,
-						StartDate = DateTime.Today.AddDays(2),
-						EndDate = DateTime.Today.AddDays(4).AddSeconds(-1),
+						StartDate = DateTime.Today.AddDays(1).StartOfDay(),
+						EndDate = DateTime.Today.AddDays(4).EndOfDay(),
 						GuestId = 2,
 						RoomStatus = 2,
 						RoomType = 1,
-						Price = Decimal.Parse("0,45"),
+						Price = Decimal.Parse("0.45", CultureInfo.InvariantCulture),
 						Guest = new Guest() {
 							GuestId = 2,
 							Name = "Guest 2"
@@ -47,12 +48,27 @@ namespace BryntumSchedulerCrudDemo
 						Id = 3,
 						Name = "",
 						resourceId = 5,
-						StartDate = DateTime.Today.AddDays(-1),
-						EndDate = DateTime.Today.AddDays(1).AddSeconds(-1),
+						StartDate = DateTime.Today.AddDays(-1).StartOfDay(),
+						EndDate = DateTime.Today.AddDays(1).EndOfDay(),
 						GuestId = 3,
 						RoomStatus = 2,
 						RoomType = 1,
-						Price = Decimal.Parse("123,45"),
+						Price = Decimal.Parse("123.45", CultureInfo.InvariantCulture),
+                        Guest = new Guest() {
+							GuestId = 1,
+							Name = "Guest 1"
+						}
+					},
+				new RoomBooking() {
+						Id = 4,
+						Name = "",
+						resourceId = 5,
+						StartDate = DateTime.Today.AddDays(2).StartOfDay(),
+						EndDate = DateTime.Today.AddDays(5).EndOfDay(),
+						GuestId = 3,
+						RoomStatus = 2,
+						RoomType = 1,
+						Price = Decimal.Parse("123.45", CultureInfo.InvariantCulture),
                         Guest = new Guest() {
 							GuestId = 1,
 							Name = "Guest 1"

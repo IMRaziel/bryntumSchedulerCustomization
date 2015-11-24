@@ -37,7 +37,7 @@ Ext.define('MyApp.view.Viewport', {
             listeners       : {
                 loadfail    : this.processError,
                 syncfail    : this.processError,
-                load: _ => scheduler.scrollToDate/*Centered*/(new Date(), true),
+                load: _ => scheduler.scrollToDateCentered(new Date(), true),
                 scope       : this
             }
         });
@@ -63,7 +63,7 @@ Ext.define('MyApp.view.Viewport', {
 		var daySelectionComboConfig = {
 			xtype: "combo",
 			id: "daySelectionCombo",
-			store: datesRange.map((x, i) =>[i == 0 ? today : x, Ext.Date.format(x, "l - d F")]),
+			store: datesRange.map((x, i) =>[i == 14 ? today : x, Ext.Date.format(x, "l - d F")]),
 			value: today,
 			listeners: {
 				select: combo => {

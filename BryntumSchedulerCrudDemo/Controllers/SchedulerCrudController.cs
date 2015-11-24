@@ -10,12 +10,19 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
+
 
 namespace BryntumSchedulerCrudDemo.Controllers
 {
     public class SchedulerCrudController : Controller
     {
-        public const string dateFormat = "yyyy-MM-dd\\THH:mm:ss";
+	    public ActionResult ServerTime() {
+		    var q = TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).TotalMinutes;
+			return JavaScript("window.serverOffset="+ q);
+	    }
+
+	    public const string dateFormat = "yyyy-MM-dd\\THH:mm:ss";
 
         /// <summary>
         /// Helper method to get POST request body.
@@ -28,12 +35,19 @@ namespace BryntumSchedulerCrudDemo.Controllers
             return new StreamReader(req).ReadToEnd();
         }
 
-        /// <summary>
-        /// Load request handler.
-        /// </summary>
-        /// <returns>JSON encoded response.</returns>
-        [System.Web.Mvc.HttpGet]
-        public ActionResult Load() {
+		public ActionResult Index()
+		{
+			{
+				return Redirect(Url.Content("~/index.html"));
+			}
+		}
+
+		/// <summary>
+		/// Load request handler.
+		/// </summary>
+		/// <returns>JSON encoded response.</returns>
+		[System.Web.Mvc.HttpGet]
+	    public ActionResult Load() {
 //	        throw new Exception();
             SchedulerLoadRequest loadRequest = null;
             ulong? requestId = null;
