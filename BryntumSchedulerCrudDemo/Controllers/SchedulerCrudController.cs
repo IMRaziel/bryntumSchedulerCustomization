@@ -33,8 +33,8 @@ namespace BryntumSchedulerCrudDemo.Controllers
         /// </summary>
         /// <returns>JSON encoded response.</returns>
         [System.Web.Mvc.HttpGet]
-        public ActionResult Load()
-        {
+        public ActionResult Load() {
+//	        throw new Exception();
             SchedulerLoadRequest loadRequest = null;
             ulong? requestId = null;
 
@@ -42,7 +42,7 @@ namespace BryntumSchedulerCrudDemo.Controllers
             {
                 string json = Request.QueryString.Get("q");
 
-                var scheduler = new Scheduler<RoomBooking, Room>();
+                var scheduler = new DemoScheduler();
 
                 // decode request object
                 try
@@ -96,7 +96,7 @@ namespace BryntumSchedulerCrudDemo.Controllers
             {
                 string json = getPostBody();
 
-                var scheduler = new Scheduler<RoomBooking, Room>();
+                var scheduler = new DemoScheduler();
 
                 // decode request object
                 try
@@ -183,7 +183,7 @@ namespace BryntumSchedulerCrudDemo.Controllers
         /// <returns>Empty string.</returns>
         public string Reset()
         {
-            var scheduler = new Scheduler<RoomBooking, Room>();
+            var scheduler = new DemoScheduler();
 
             scheduler.Reset();
             scheduler.context.SaveChanges();

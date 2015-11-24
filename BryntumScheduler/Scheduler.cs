@@ -43,7 +43,7 @@ namespace Bryntum.Scheduler
         /// Gets list of existing tasks.
         /// </summary>
         /// <returns>List of tasks.</returns>
-        public IEnumerable<T> getEvents(params string[] includes) {
+        public virtual IEnumerable<T> getEvents(params string[] includes) {
 	        var query = context.Events.OfType<T>();
             foreach (var i in includes ?? new string[0]) {
 	            query = query.Include(i);
@@ -113,7 +113,7 @@ namespace Bryntum.Scheduler
         /// Gets list of existing resources.
         /// </summary>
         /// <returns>List of resources.</returns>
-        public IEnumerable<TR> getResources()
+        public virtual IEnumerable<TR> getResources()
         {
             return context.Resources.OfType<TR>().ToList();
         }
@@ -122,14 +122,14 @@ namespace Bryntum.Scheduler
         /// 
         /// </summary>
         /// 
-        public IEnumerable<TR> getResources(int page, int pageSize)
+        public virtual IEnumerable<TR> getResources(int page, int pageSize)
         {
             if (page < 1) page = 1;
 
             return context.Resources.OfType<TR>().OrderBy(x => x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
 
-        public int getResourceCount() 
+        public virtual int getResourceCount() 
         {
             return context.Resources.Count();
         }
@@ -215,7 +215,7 @@ namespace Bryntum.Scheduler
         /// Gets current server revision stamp.
         /// </summary>
         /// <returns>Server revision stamp.</returns>
-        public int getRevision()
+        public virtual int getRevision()
         {
             return Convert.ToInt32(getOption("revision", true));
         }

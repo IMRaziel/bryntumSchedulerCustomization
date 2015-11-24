@@ -189,6 +189,12 @@ Ext.define('MyApp.view.Viewport', {
 					readOnly: true
 				},
 				{
+					fieldLabel: "Price",
+					bind: "{Price}",
+					xtype: "numberfield",
+					readOnly: true
+				},
+				{
 					fieldLabel: "Guest",
 					bind: "{Guest.GuestId}",
 					xtype: "combo",
