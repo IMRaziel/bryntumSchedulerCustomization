@@ -59,7 +59,7 @@ Ext.define('MyApp.view.Scheduler', {
 							});
 						});
 						this.view.on("scroll", function () {
-							function intersect(view, el) {
+							function intersect(view, el, width) {
 								if (view.left > el.right || view.right < el.left) {
 									// no itersection
 									return {};
@@ -72,16 +72,17 @@ Ext.define('MyApp.view.Scheduler', {
 									// header is bigger in all directions
 									return {
 										float: "left",
-										padding: ((view.right - view.left) / 2) - 50 + (view.left - el.left)
+										padding: ((view.right - view.left) / 2) - width/2 + (view.left - el.left)
 									}
 								}
 								var result = {};
-								result.float = view.right > el.right
+								result.float = view.right >= el.right
 									? "right"
-									: "left"
+									: "left";
+								debugger;
 								result.padding = result.float == "right"
-									? Math.max(-(view.left - el.right) / 2.0 - 50, 10)
-									: Math.max(-(el.left - view.right) / 2.0 - 50, 10)
+									? Math.max(-(view.left - el.right) / 2.0 - width / 2, 10)
+									: Math.max(-(el.left - view.right) / 2.0 - width / 2, 10)
 								return result;
 							}
 
@@ -90,15 +91,24 @@ Ext.define('MyApp.view.Scheduler', {
 							var topHead = e.view.headerCt.el.query("table")[0]
 							var monthHeaders = Ext.get(topHead).query("td");
 
-							monthHeaders.forEach(x=> {
+							function getInnerWidth(elem) {
+								var style = window.getComputedStyle(elem);
+								return elem.offsetWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight) - parseFloat(style.borderLeft) - parseFloat(style.borderRight) - parseFloat(style.marginLeft) - parseFloat(style.marginRight);
+							}
+
+							monthHeaders.map(x=> {
 								var viewRect = e.el.dom.getBoundingClientRect();
 								var headRect = x.getBoundingClientRect();
-								var style = intersect(viewRect, headRect);
-
 								var title = x.children[0];
+								var style = intersect(viewRect, headRect, getInnerWidth(title));
+								style.el = title;
+								return style;
+							}).forEach(x => {
+								var title = x.el;
+								var style = x;
 								title.style.float = style.float;
-								title.style["padding-" + style.float] = style.padding + "px"
-								console.log(style)
+								title.style["padding-left"] = title.style["padding-right"] = undefined;
+								title.style["padding-" + style.float] = style.padding + "px";
 							})
 						})
 
