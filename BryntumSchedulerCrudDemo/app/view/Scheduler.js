@@ -23,47 +23,54 @@ Ext.define('MyApp.view.Scheduler', {
                     width       : 200,
                     dataIndex: 'Name',
                     tdCls: "resource-gradient",
-                    cls: "hide-lines"
+					flex: 1
                 }
             ],
         	lockedGridConfig : {
-	            	listeners: {
-			            render: function() {
-				            // found no way to override row rendering. will change styles after render
-				            this.view.on("refresh", _ => {
-					            var rows = Ext.get(this.el.dom.id).query("table");
-					            rows.forEach(x => {
-						            x.className = "hide-lines";
-					            });
-				            });
-			            }
-		            },
-	            viewConfig: {
-	            	stripeRows: false,
-	            },
+	            bodyCls: "resource-gradient"
             },
         	schedulerConfig : {
-	            	listeners: {
-	            		render: function () {
-	            			debugger;
-	            		}
-	            	},
-	            viewConfig: {
-	            	stripeRows: false,
-	            	getRowClass: function (record, index, rowParams, store) {
-						debugger
-	            		return "";
-	            	}
-	            },
-	            stripeRows: false,
-        	},
-            plugins : [
-            ],
+        		bodyCls: "events-panel",
+        		listeners: {
+        			render: function() {
+        				// found no way to override row rendering. will change styles after render
+						// this is needed for compatibility with zone plugin
+				        this.view.on("refresh", _ => {
+					        var rows = Ext.get(this.el.dom.id).query("table");
+					        rows.forEach(x => {
+						        debugger;
+					        	x.className += " events-panel-row";
+					        });
+				        });
+			        }
+		        },
+			},
+        	plugins: [
+				Ext.create("Sch.plugin.Zones", {
+					store: Ext.create('Ext.data.JsonStore', {
+						model: 'Sch.model.Range',
+
+						data: this.datesRange
+							.filter(x => x.getDay() == 6 || x.getDay() == 0)
+							.map(x => ({
+									StartDate: x,
+									EndDate: Sch.util.Date.add(x, Sch.util.Date.DAY, 1),
+									Cls: 'weekend'
+								})
+							)
+					})
+				})
+        	],
             listeners : {
                 scope : this
-            }
+            },
+            viewConfig: {
+            	stripeRows: false,
+            },
+            columnLines: false,
+            rowLines: false,
         });
-
+		debugger;
         this.callParent(arguments);
     }
 });

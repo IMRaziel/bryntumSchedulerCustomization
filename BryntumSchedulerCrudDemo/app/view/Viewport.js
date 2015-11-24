@@ -52,19 +52,18 @@ Ext.define('MyApp.view.Viewport', {
 
     	var daysInTwoMonths = Sch.util.Date.getDurationInDays(today, endDate);
 
+	    var datesRange = Array.range(-14, daysInTwoMonths)
+		    .map(x => {
+			    var date = Sch.util.Date.add(new Date(), Sch.util.Date.DAY, x);
+			    date.setHours(0, 0, 0, 0);
+
+			    return x == 0 ? today : date;
+		    });
+
 		var daySelectionComboConfig = {
 			xtype: "combo",
 			id: "daySelectionCombo",
-			store: Array.range(-14, daysInTwoMonths)
-				.map(x => {
-					var date = Sch.util.Date.add(new Date(), Sch.util.Date.DAY, x);
-					date.setHours(0, 0, 0, 0);
-
-					return [
-						x==0? today : date,
-						Ext.Date.format(date, "l - d F")
-					]
-				}),
+			store: datesRange.map((x, i) => [i, x]),
 			value: today,
 			listeners: {
 				select: combo => {
@@ -114,6 +113,7 @@ Ext.define('MyApp.view.Viewport', {
             viewPreset:			"MonthDayNameDay",
             startDate           : startDate,
             endDate             : endDate,
+            datesRange			: datesRange,
             title               : 'Scheduler with pagination',
             eventResizeHandles  : 'both',
             width               : 800,
