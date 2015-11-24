@@ -63,7 +63,7 @@ Ext.define('MyApp.view.Viewport', {
 		var daySelectionComboConfig = {
 			xtype: "combo",
 			id: "daySelectionCombo",
-			store: datesRange.map((x, i) => [i, x]),
+			store: datesRange.map((x, i) =>[i == 0 ? today : x, Ext.Date.format(x, "l - d F")]),
 			value: today,
 			listeners: {
 				select: combo => {
@@ -114,7 +114,6 @@ Ext.define('MyApp.view.Viewport', {
             startDate           : startDate,
             endDate             : endDate,
             datesRange			: datesRange,
-            title               : 'Scheduler with pagination',
             eventResizeHandles  : 'both',
             width               : 800,
             height              : 350,
