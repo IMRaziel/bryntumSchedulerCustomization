@@ -15,7 +15,14 @@ Ext.define('MyApp.view.Scheduler', {
     initComponent : function() {
     	var me = this;
 
-
+		 Ext.define('Line', {
+            extend : 'Ext.data.Model',
+            fields : [
+                'Date',
+                'Text',
+                'Cls'
+            ]
+        });
 
         Ext.apply(this, {
         	eventRenderer: function (eventRec, resourceRec, templateData) {
@@ -67,6 +74,19 @@ Ext.define('MyApp.view.Scheduler', {
 									Cls: 'weekend'
 								})
 							)
+					})
+				}),
+				Ext.create('Sch.plugin.Lines', {
+					getHeaderElementCls: _ => "sch-header-indicator current-time-indicator",
+					showHeaderElements: true,
+					//headerTemplate: new Ext.XTemplate("<div class='current-time-indicator' />"),
+					store: Ext.create('Ext.data.JsonStore', {
+						model: 'Sch.model.Range',
+						data: [{
+							Date: new Date,
+							Cls: "current-time-line",
+							Text: "Now"
+						}]
 					})
 				})
         	],

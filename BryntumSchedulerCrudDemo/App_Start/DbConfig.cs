@@ -27,22 +27,34 @@ namespace BryntumSchedulerCrudDemo.App_Start
 					context.Guests.Add(new Guest() {
 						Name = "Guest 2"
 					});
+					context.Guests.Add(new Guest() {
+						Name = "Guest with realy realy realy long name"
+					});
 					context.SaveChanges();
 
 					context.Events.Add(new RoomBooking() {
 						Name = "",
 						resourceId = 3,
 						StartDate = DateTime.Today,
-						EndDate = DateTime.Today.AddDays(1),
+						EndDate = DateTime.Today.AddDays(1).AddSeconds(-1),
 						GuestId = 1
 					});
 					context.Events.Add(new RoomBooking() {
 						Name = "",
 						resourceId = 4,
 						StartDate = DateTime.Today.AddDays(2),
-						EndDate = DateTime.Today.AddDays(4),
+						EndDate = DateTime.Today.AddDays(4).AddSeconds(-1),
 						GuestId = 2,
-						RoomStatus = 1,
+						RoomStatus = 2,
+						RoomType = 1
+					});
+					context.Events.Add(new RoomBooking() {
+						Name = "",
+						resourceId = 5,
+						StartDate = DateTime.Today.AddDays(-1),
+						EndDate = DateTime.Today.AddDays(1).AddSeconds(-1),
+						GuestId = 3,
+						RoomStatus = 2,
 						RoomType = 1
 					});
 					context.SaveChanges();
