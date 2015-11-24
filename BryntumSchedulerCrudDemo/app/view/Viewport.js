@@ -37,7 +37,7 @@ Ext.define('MyApp.view.Viewport', {
             listeners       : {
                 loadfail    : this.processError,
                 syncfail    : this.processError,
-                load: _ => scheduler.scrollToDateCentered(new Date(), true),
+                load: function() { scheduler.scrollToDateCentered(new Date(), true) },
                 scope       : this
             }
         });
@@ -53,7 +53,7 @@ Ext.define('MyApp.view.Viewport', {
     	var daysInTwoMonths = Sch.util.Date.getDurationInDays(today, endDate);
 
 	    var datesRange = Array.range(-14, daysInTwoMonths)
-		    .map(x => {
+		    .map(function (x){
 			    var date = Sch.util.Date.add(new Date(), Sch.util.Date.DAY, x);
 			    date.setHours(0, 0, 0, 0);
 
@@ -63,10 +63,10 @@ Ext.define('MyApp.view.Viewport', {
 		var daySelectionComboConfig = {
 			xtype: "combo",
 			id: "daySelectionCombo",
-			store: datesRange.map((x, i) =>[i == 14 ? today : x, Ext.Date.format(x, "l - d F")]),
+			store: datesRange.map(function(x, i) { return [i == 14 ? today : x, Ext.Date.format(x, "l - d F")] }),
 			value: today,
 			listeners: {
-				select: combo => {
+				select: function (combo) {
 					scheduler.scrollToDate/*Centered*/(combo.getValue(), true);
 				}
 			},
@@ -157,7 +157,7 @@ Ext.define('MyApp.view.Viewport', {
 			},
 
 			listeners: {
-				beforerender: x => x.setViewModel({})
+				beforerender: function(x) { x.setViewModel({}) }
 			},
 
 			items: [

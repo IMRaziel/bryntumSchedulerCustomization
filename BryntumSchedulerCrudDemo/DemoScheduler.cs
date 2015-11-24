@@ -73,6 +73,51 @@ namespace BryntumSchedulerCrudDemo
 							GuestId = 1,
 							Name = "Guest 1"
 						}
+					},
+				new RoomBooking() {
+						Id = 5,
+						Name = "",
+						resourceId = 5,
+						StartDate = DateTime.Today.AddMonths(1).StartOfDay(),
+						EndDate = DateTime.Today.AddMonths(10).EndOfDay(),
+						GuestId = 3,
+						RoomStatus = 2,
+						RoomType = 1,
+						Price = Decimal.Parse("123.45", CultureInfo.InvariantCulture),
+                        Guest = new Guest() {
+							GuestId = 1,
+							Name = "Guest 2"
+						}
+					},
+				new RoomBooking() {
+						Id = 6,
+						Name = "",
+						resourceId = 8,
+						StartDate = DateTime.Today.AddMonths(-3).StartOfDay(),
+						EndDate = DateTime.Today.AddMonths(10).EndOfDay(),
+						GuestId = 3,
+						RoomStatus = 2,
+						RoomType = 1,
+						Price = Decimal.Parse("123.45", CultureInfo.InvariantCulture),
+                        Guest = new Guest() {
+							GuestId = 1,
+							Name = "Guest out of time bound both sides"
+						}
+					},
+				new RoomBooking() {
+						Id = 7,
+						Name = "",
+						resourceId = 2,
+						StartDate = DateTime.Today.AddMonths(-3).StartOfDay(),
+						EndDate = DateTime.Today.AddDays(0).EndOfDay(),
+						GuestId = 3,
+						RoomStatus = 2,
+						RoomType = 1,
+						Price = Decimal.Parse("123.45", CultureInfo.InvariantCulture),
+                        Guest = new Guest() {
+							GuestId = 1,
+							Name = "Guest out of time bound both sides"
+						}
 					}
 			};
 		}
